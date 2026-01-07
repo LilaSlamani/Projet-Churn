@@ -84,7 +84,7 @@ ggplot(data_clean, aes(x = target, fill = target)) +
   ) +
   theme_minimal()
 
-#Visualisation 
+# --Visualisation 
 
 #Churn selon le type de contrat cela permet d’analyser l’impact de la durée d’engagement
 
