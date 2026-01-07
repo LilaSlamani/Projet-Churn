@@ -10,10 +10,9 @@ data_clean <- readRDS("data/data_clean.rds")
 
 # Suppression de l'identifiant
 data_model <- data_clean %>%
-  select(-ID)
+  select(-ID) %>%
+  mutate_if(is.character, as.factor)
 
-# Vérification
-str(data_model)
 
 # SÉPARATION TRAIN / TEST
 
@@ -28,23 +27,30 @@ index <- createDataPartition(
 train <- data_model[index, ]
 test  <- data_model[-index, ]
 
-# Vérification du déséquilibre
-prop.table(table(train$target))
-prop.table(table(test$target))
+# RÉ-ÉCHANTILLONNAGE
+train_balance <- upSample(x = train[, -ncol(train)], # Toutes les colonnes sauf target
+                          y = train$target)          # La colonne target
+
+names(train_balance)[names(train_balance) == "Class"] <- "target" 
+# upSample renomme la cible en "Class", on remet "target"
 
 
-# ENTRAÎNEMENT : RÉGRESSION LOGISTIQUE
+print("Distribution AVANT ré-échantillonnage :")
+print(prop.table(table(train$target)))
+print("Distribution APRÈS ré-échantillonnage :")
+print(prop.table(table(train_balance$target))) # Devrait être 50/50
 
 
+# 2. Modélisation (Sur les données équilibrées 'train_balance')
 modele_logistique <- glm(
   target ~ .,
-  data = train,
+  data = train_balance, 
   family = binomial
 )
 
 summary(modele_logistique)
 
-# PRÉDICTIONS
+# PRÉDICTIONS 
 
 prob_test <- predict(
   modele_logistique,
@@ -53,7 +59,7 @@ prob_test <- predict(
 )
 
 # Seuil adapté au déséquilibre
-seuil <- 0.4
+seuil <- 0.5
 
 pred_test <- ifelse(prob_test > seuil, "Oui", "Non")
 pred_test <- factor(pred_test, levels = c("Non", "Oui"))
@@ -61,7 +67,7 @@ pred_test <- factor(pred_test, levels = c("Non", "Oui"))
 # ÉVALUATION DU MODÈLE
 
 # Matrice de confusion
-confusionMatrix(pred_test, test$target)
+print(confusionMatrix(pred_test, test$target))
 
 # Courbe ROC et AUC
 roc_obj <- roc(test$target, prob_test)
@@ -72,4 +78,4 @@ plot(
   main = "Courbe ROC - Régression Logistique"
 )
 
-auc(roc_obj)
+print(auc(roc_obj))

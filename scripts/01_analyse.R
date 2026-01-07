@@ -1,8 +1,8 @@
 
-library(tidyverse)# manipulation des données + visualisation
-library(gtsummary)# tableaux statistiques propres
-library(naniar) # gestion des valeurs manquantes
-library(GGally)#graphiques exploratoires
+library(tidyverse)     # manipulation des données + visualisation
+library(gtsummary)     # tableaux statistiques propres
+library(naniar)        # gestion des valeurs manquantes
+library(GGally)        #graphiques exploratoires
 
 
 
@@ -46,15 +46,15 @@ data_clean <- data %>%
 
 # Cela devrait afficher 11 NA dans "Charges.totales"
 print(colSums(is.na(data_clean)))
-print('\n')
+cat('\n')
 
 # On supprime les lignes vides
 data_clean <- data_clean %>% drop_na()
 
-# Doit afficher 0 partout
+# Vérification : Doit afficher 0 partout
 print(colSums(is.na(data_clean)))
 
-# --- PARTIE 2 : ANALYSE UNIVARIÉE (Tableau) ---
+# --- PARTIE 2 : ANALYSE DESCRIPTIVE ---
 
 mon_tableau <- data_clean %>%
   select(Genre, Senior, Anciennete, charges.mensuelles, target) %>%
@@ -86,8 +86,9 @@ ggplot(data_clean, aes(x = target, fill = target)) +
 
 #Visualisation 
 
-# Churn selon le type de contrat cela permet d’analyser l’impact de la durée d’engagement
+#Churn selon le type de contrat cela permet d’analyser l’impact de la durée d’engagement
 
+print(
 ggplot(data_clean, aes(x = Contrat, fill = target)) +
   geom_bar(position = "fill") +
   labs(
@@ -95,10 +96,11 @@ ggplot(data_clean, aes(x = Contrat, fill = target)) +
     y = "Proportion de clients"
   ) +
   theme_minimal()
-
+)
 
 # Charges mensuelles et churn : comparaison des distributions à l’aide d’un boxplot
 
+print(
 ggplot(data_clean, aes(x = target, y = charges.mensuelles, fill = target)) +
   geom_boxplot() +
   labs(
@@ -107,10 +109,10 @@ ggplot(data_clean, aes(x = target, y = charges.mensuelles, fill = target)) +
     y = "Charges mensuelles"
   ) +
   theme_minimal()
-
+)
 
 # Ancienneté des clients et churn -> Hypothèse que les clients récents quittent plus souvent
-
+print(
 ggplot(data_clean, aes(x = target, y = Anciennete, fill = target)) +
   geom_boxplot() +
   labs(
@@ -118,17 +120,8 @@ ggplot(data_clean, aes(x = target, y = Anciennete, fill = target)) +
     y = "Ancienneté (en mois)"
   ) +
   theme_minimal()
+)
 
-
-# Churn selon le statut Senior
-
-ggplot(data_clean, aes(x = Senior, fill = target)) +
-  geom_bar(position = "fill") +
-  labs(
-    title = "Churn selon le statut Senior",
-    y = "Proportion"
-  ) +
-  theme_minimal()
 
 
 # Tableau comparatif des variables numériques selon la variable cible avec test statistique
@@ -140,32 +133,18 @@ data_clean %>%
 
 
 # Senior vs Désabonnement
-plot_senior <- data_clean %>%
-  ggplot(aes(x = Senior, fill = target)) + 
-  geom_bar(position = "fill") +            
-  labs(
-    title = "Impact du statut Senior sur le Désabonnement",
-    y = "Proportion",
-    x = "Est Senior ?",
-    fill = "Désabonnement"
-  ) +
-  theme_minimal() +
-  scale_fill_brewer(palette = "Set1") # Couleurs distinctes
-
-print(plot_senior) 
-
-
-# La Matrice de Corrélation (Prix vs Ancienneté)
-
-plot_corr <- data_clean %>%
-  select(Anciennete, charges.mensuelles, Charges.totales, target) %>%
-  ggpairs(
-    aes(color = target, alpha = 0.5), # Colorié selon le départ
-    columns = 1:3,
-    title = "Matrice de Corrélation : Prix vs Ancienneté"
-  )
-
-print(plot_corr)
+print(
+  data_clean %>% 
+    ggplot(aes(x = Senior, fill = target)) + 
+    geom_bar(position = "fill") +            
+    labs(
+      title = "Churn selon le statut Senior",
+      y = "Proportion",
+      x = "Est Senior ?",
+      fill = "Désabonnement"
+    ) +
+    theme_minimal() 
+)
 
 # TABLEAU STATISTIQUE (GTSUMMARY)
 data_clean %>%
