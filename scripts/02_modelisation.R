@@ -1,9 +1,8 @@
 
 # LIBRAIRIES
 
-library(tidyverse)
-library(caret)
-library(pROC)
+library(caret) # séparation train/test et évaluation
+library(pROC) #courbe ROC et AUC
 
 # CHARGEMENT DES DONNÉES NETTOYÉES
 data_clean <- readRDS("data/data_clean.rds")
@@ -16,8 +15,10 @@ data_model <- data_clean %>%
 
 # SÉPARATION TRAIN / TEST
 
+#fige le hasard pour que les résultats soient reproductibles
 set.seed(123)
 
+# Séparation stratifiée (respect du déséquilibre)
 index <- createDataPartition(
   data_model$target,
   p = 0.7,
