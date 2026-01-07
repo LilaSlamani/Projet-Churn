@@ -174,4 +174,8 @@ data_clean %>%
   add_p()
 
 # SAUVEGARDE DES DONNÉES NETTOYÉES
+<<<<<<< HEAD
 saveRDS(data_clean, "data/data_clean.rds")
+=======
+saveRDS(data_clean, "data/data_clean.rds")
+>>>>>>> 0fe38bd1dadec43c0c1c1d67d13e86e6a127858a

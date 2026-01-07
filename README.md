@@ -7,8 +7,8 @@ Ce projet s'inscrit dans une démarche professionnelle de Data Science pour un o
 ## Contenu du projet
 *   `data/` : Contient le fichier de données `churn_internet.csv`.
 *   `scripts/` :
-    *   `01_analyse_exploratoire.R` : Nettoyage et statistiques (Gtsummary).
-    *   `02_modelisation.R` : Algorithme de prédiction.*
+    *   `01_analyse.R` : Nettoyage et statistiques (Gtsummary).
+    *   `02_modelisation.R` : Algorithme de prédiction.
 *   `app/` : Code de l'application Web de démonstration.
 
 ## Technologies utilisées
