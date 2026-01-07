@@ -80,3 +80,5 @@ plot(
 )
 
 print(auc(roc_obj))
+
+saveRDS(modele_logistique, "data/modele_churn.rds")
