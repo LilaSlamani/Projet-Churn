@@ -1,5 +1,4 @@
 
-
 library(tidyverse)# manipulation des données + visualisation
 library(gtsummary)# tableaux statistiques propres
 library(naniar) # gestion des valeurs manquantes
