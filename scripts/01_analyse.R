@@ -3,8 +3,7 @@ library(tidyverse)# manipulation des données + visualisation
 library(gtsummary)# tableaux statistiques propres
 library(naniar) # gestion des valeurs manquantes
 library(GGally)#graphiques exploratoires
-library(caret) # séparation train/test et évaluation
-library(pROC) # courbe ROC et AUC
+
 
 
 # --- PARTIE 1 : CHARGEMENT & NETTOYAGE ---
@@ -156,7 +155,7 @@ plot_senior <- data_clean %>%
 print(plot_senior) 
 
 
-# Plot : La Matrice de Corrélation (Prix vs Ancienneté)
+# La Matrice de Corrélation (Prix vs Ancienneté)
 
 plot_corr <- data_clean %>%
   select(Anciennete, charges.mensuelles, Charges.totales, target) %>%
@@ -167,3 +166,12 @@ plot_corr <- data_clean %>%
   )
 
 print(plot_corr)
+
+# TABLEAU STATISTIQUE (GTSUMMARY)
+data_clean %>%
+  select(target, charges.mensuelles, Charges.totales, Anciennete) %>%
+  tbl_summary(by = target) %>%
+  add_p()
+
+# SAUVEGARDE DES DONNÉES NETTOYÉES
+saveRDS(data_clean, "data/data_clean.rds")
