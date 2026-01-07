@@ -155,18 +155,17 @@ plot_senior <- data_clean %>%
 print(plot_senior) 
 
 
-# MATRICE DE CORRÉLATION
-data_num <- data_clean %>%
-  select(Anciennete, charges.mensuelles, Charges.totales)
+# La Matrice de Corrélation (Prix vs Ancienneté)
 
-cor(data_num)
+plot_corr <- data_clean %>%
+  select(Anciennete, charges.mensuelles, Charges.totales, target) %>%
+  ggpairs(
+    aes(color = target, alpha = 0.5), # Colorié selon le départ
+    columns = 1:3,
+    title = "Matrice de Corrélation : Prix vs Ancienneté"
+  )
 
-ggcorr(
-  data_num,
-  label = TRUE,
-  label_round = 2
-) +
-  labs(title = "Matrice de corrélation des variables numériques")
+print(plot_corr)
 
 # TABLEAU STATISTIQUE (GTSUMMARY)
 data_clean %>%
