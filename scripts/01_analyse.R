@@ -88,20 +88,19 @@ ggplot(data_clean, aes(x = target, fill = target)) +
 
 #Churn selon le type de contrat cela permet d’analyser l’impact de la durée d’engagement
 
-print(
-ggplot(data_clean, aes(x = Contrat, fill = target)) +
+
+plot_contrat <- ggplot(data_clean, aes(x = Contrat, fill = target)) +
   geom_bar(position = "fill") +
   labs(
     title = "Churn selon le type de contrat",
     y = "Proportion de clients"
   ) +
   theme_minimal()
-)
+print(plot_contrat)
 
 # Charges mensuelles et churn : comparaison des distributions à l’aide d’un boxplot
 
-print(
-ggplot(data_clean, aes(x = target, y = charges.mensuelles, fill = target)) +
+plot_charges <- ggplot(data_clean, aes(x = target, y = charges.mensuelles, fill = target)) +
   geom_boxplot() +
   labs(
     title = "Charges mensuelles selon le churn",
@@ -109,19 +108,18 @@ ggplot(data_clean, aes(x = target, y = charges.mensuelles, fill = target)) +
     y = "Charges mensuelles"
   ) +
   theme_minimal()
-)
+print(plot_charges)
 
-# Ancienneté des clients et churn -> Hypothèse que les clients récents quittent plus souvent
-print(
-ggplot(data_clean, aes(x = target, y = Anciennete, fill = target)) +
+plot_anciennete <- ggplot(data_clean, aes(x = target, y = Anciennete, fill = target)) +
   geom_boxplot() +
   labs(
     title = "Ancienneté des clients selon le churn",
-    y = "Ancienneté (en mois)"
+    y = "Ancienneté (en mois)",
+    x = "Churn (Target)"
   ) +
   theme_minimal()
-)
 
+print(plot_anciennete)
 
 
 # Tableau comparatif des variables numériques selon la variable cible avec test statistique

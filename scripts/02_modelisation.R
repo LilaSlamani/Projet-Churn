@@ -6,7 +6,7 @@ library(caret)
 library(pROC)
 
 # CHARGEMENT DES DONNÉES NETTOYÉES
-data_clean <- readRDS("data/data_clean.rds")
+
 
 # Suppression de l'identifiant
 data_model <- data_clean %>%
@@ -79,3 +79,5 @@ plot(
 )
 
 print(auc(roc_obj))
+
+saveRDS(modele_logistique, "data/modele_churn.rds")
