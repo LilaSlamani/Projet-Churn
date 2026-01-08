@@ -6,7 +6,7 @@ library(GGally)        #graphiques exploratoires
 
 
 
-# --- PARTIE 1 : CHARGEMENT & NETTOYAGE ---
+# CHARGEMENT & NETTOYAGE ---
 data <- read.csv("data/churn_internet.csv", stringsAsFactors = TRUE)
 
 # Aperçu rapide des données
@@ -15,13 +15,11 @@ str(data)       # structure des variables
 summary(data)   # statistiques descriptives globales
 
 
-# Création d’un nouveau jeu de données "data_clean"
-# afin de conserver les données brutes intactes
+# Création d’un nouveau jeu de données "data_clean" afin de conserver les données brutes intactes
 
 data_clean <- data %>%
   mutate(
-    # Les variables monétaires sont stockées en texte
-    # avec une virgule comme séparateur décimal.
+    # Les variables monétaires sont stockées en texte avec une virgule comme séparateur décimal.
     # On remplace la virgule par un point puis on convertit en numérique.
     charges.mensuelles = as.numeric(
       str_replace(charges.mensuelles, ",", ".")
@@ -31,16 +29,14 @@ data_clean <- data %>%
       str_replace(Charges.totales, ",", ".")
     ),
     
-    # Transformation de la variable Senior (0 / 1)
-    # en variable catégorielle lisible
+    # Transformation de la variable Senior (0 / 1) en variable catégorielle lisible
     Senior = factor(
       Senior,
       levels = c(0, 1),
       labels = c("Non", "Oui")
     ),
     
-    # Transformation explicite de la variable cible
-    # target = Oui (churn) / Non (pas de churn)
+    # Transformation explicite de la variable cible : target = Oui (churn) / Non (pas de churn)
     target = factor(target)
   )
 
@@ -54,7 +50,7 @@ data_clean <- data_clean %>% drop_na()
 # Vérification : Doit afficher 0 partout
 print(colSums(is.na(data_clean)))
 
-# --- PARTIE 2 : ANALYSE DESCRIPTIVE ---
+# ANALYSE DESCRIPTIVE 
 
 mon_tableau <- data_clean %>%
   select(Genre, Senior, Anciennete, charges.mensuelles, target) %>%
@@ -67,7 +63,7 @@ mon_tableau <- data_clean %>%
 print(mon_tableau) # S'affiche dans le Viewer
 
 
-#ANALYSE DESCRIPTIVE DE LA VARIABLE CIBLE
+# ANALYSE DESCRIPTIVE DE LA VARIABLE CIBLE
 # Nombre de clients churn / non churn
 table(data_clean$target)
 
@@ -84,9 +80,7 @@ ggplot(data_clean, aes(x = target, fill = target)) +
   ) +
   theme_minimal()
 
-#Visualisation 
-
-#Churn selon le type de contrat cela permet d’analyser l’impact de la durée d’engagement
+# Churn selon le type de contrat cela permet d’analyser l’impact de la durée d’engagement
 
 
 plot_contrat <- ggplot(data_clean, aes(x = Contrat, fill = target)) +
