@@ -9,9 +9,8 @@ library(stringr)
 chemin_modele <- "../data/modele_churn.rds" 
 modele_final <- if(file.exists(chemin_modele)) readRDS(chemin_modele) else NULL
 
-# ==============================================================================
-# UI : DESIGN MODERNE, MINIMALISTE & FLEXIBLE
-# ==============================================================================
+# UI
+
 ui <- fluidPage(
   title = "Interface Rétention FAI",
   tags$head(
@@ -151,7 +150,7 @@ server <- function(input, output) {
     na.omit(df)
   })
   
-  # MODIFICATION ICI : Ajout du lengthMenu pour sélectionner le nombre de lignes
+  # Ajout du lengthMenu pour sélectionner le nombre de lignes
   output$raw_data_table <- renderDataTable({ 
     datatable(data_reactive(), 
               options = list(
@@ -182,13 +181,20 @@ server <- function(input, output) {
   
   observeEvent(input$btn_predict, {
     req(modele_final)
+    
+    # 1. Création de l'individu (identique)
     indiv <- data.frame(
       Contrat = factor(input$input_contract, levels = c("Mensuel", "Annuel", "Bisannuel")),
+      
+      # Les levels doivent être IDENTIQUES aux choices de l'UI
       Service.Internet = factor(input$input_internet, levels = c("DSL", "Fibre optique", "Non")),
+      
       Senior = factor(input$input_senior, levels = c("Non", "Oui")),
       Anciennete = input$input_tenure,
       charges.mensuelles = input$input_charges,
       Charges.totales = input$input_total,
+      
+      # Valeurs par défaut pour les autres colonnes
       Genre = factor("Homme", levels = c("Femme", "Homme")),
       Enfants = factor("Non", levels = c("Non", "Oui")),
       Partenaire = factor("Non", levels = c("Non", "Oui")),
@@ -198,20 +204,30 @@ server <- function(input, output) {
       Mode.de.paiement = factor("Carte bancaire", levels = c("Carte bancaire", "Virement bancaire", "Cheque electronique", "Cheque papier"))
     )
     
-    prob <- predict(modele_final, newdata = indiv, type = "response")
-    score <- round(prob * 100, 2)
-    
-    output$modern_res_ui <- renderUI({
-      status_class <- if(score > 50) "high" else "low"
-      div(class = paste("res-box", status_class),
-          p(class = "score", paste0(score, "%")),
-          span(style="color: #567C8D; font-weight: 600;", 
-               if(score > 50) "ALERTE : RISQUE DE DÉPART ÉLEVÉ" else "STABILITÉ : CLIENT FIDÈLE")
-      )
-    })
-    
-    output$txt_recommendation <- renderText({
-      if(score > 50) "Risque critique. Une offre de rétention ou un appel de fidélisation est conseillé." else "Profil stable. Aucune action particulière n'est requise."
+    tryCatch({
+      # 2.Utiliser type = "prob"
+      prob_df <- predict(modele_final, newdata = indiv, type = "prob")
+      
+      # Avec caret, prob_df est un tableau avec deux colonnes : 'Non' et 'Oui'
+      # On récupère la colonne 'Oui' 
+      score <- round(prob_df$Oui * 100, 2)
+      
+      # 3. Mise à jour de l'interface (identique)
+      output$modern_res_ui <- renderUI({
+        status_class <- if(score > 50) "high" else "low"
+        div(class = paste("res-box", status_class),
+            p(class = "score", paste0(score, "%")),
+            span(style="color: #567C8D; font-weight: 600;", 
+                 if(score > 50) "ALERTE : RISQUE DE DÉPART ÉLEVÉ" else "STABILITÉ : CLIENT FIDÈLE")
+        )
+      })
+      
+      output$txt_recommendation <- renderText({
+        if(score > 50) "Risque critique. Une offre de rétention ou un appel de fidélisation est vivement conseillé." else "Profil stable. Aucune action particulière n'est requise."
+      })
+      
+    }, error = function(e) { 
+      showNotification(paste("Erreur de prédiction :", e$message), type = "error") 
     })
   })
 }
