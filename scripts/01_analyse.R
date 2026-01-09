@@ -72,14 +72,17 @@ table(data_clean$target)
 prop.table(table(data_clean$target))
 
 # Visualisation de la répartition du churn
-ggplot(data_clean, aes(x = target, fill = target)) +
+print(ggplot(data_clean, aes(x = target, fill = target)) +
   geom_bar() +
   labs(
     title = "Répartition des clients selon le churn",
     x = "Churn",
-    y = "Nombre de clients"
+    y = "Nombre de clients",
+    fill = "Churn"
   ) +
   theme_minimal()
+)
+
 
 #Visualisation 
 
@@ -89,8 +92,9 @@ ggplot(data_clean, aes(x = target, fill = target)) +
 plot_contrat <- ggplot(data_clean, aes(x = Contrat, fill = target)) +
   geom_bar(position = "fill") +
   labs(
-    title = "Churn selon le type de contrat",
-    y = "Proportion de clients"
+    title = "Impact du type de contrat sur le churn",
+    y = "Proportion de clients",
+    fill = "Churn"
   ) +
   theme_minimal()
 print(plot_contrat)
@@ -100,9 +104,10 @@ print(plot_contrat)
 plot_charges <- ggplot(data_clean, aes(x = target, y = charges.mensuelles, fill = target)) +
   geom_boxplot() +
   labs(
-    title = "Charges mensuelles selon le churn",
+    title = "Impact des charges mensuelles sur le churn",
     x = "Churn",
-    y = "Charges mensuelles"
+    y = "Charges mensuelles",
+    fill = "Churn"
   ) +
   theme_minimal()
 print(plot_charges)
@@ -110,9 +115,10 @@ print(plot_charges)
 plot_anciennete <- ggplot(data_clean, aes(x = target, y = Anciennete, fill = target)) +
   geom_boxplot() +
   labs(
-    title = "Ancienneté des clients selon le churn",
+    title = "Impact de l'ancienneté sur le churn",
     y = "Ancienneté (en mois)",
-    x = "Churn (Target)"
+    x = "Churn",
+    fill = "Churn"
   ) +
   theme_minimal()
 
@@ -133,10 +139,10 @@ print(
     ggplot(aes(x = Senior, fill = target)) + 
     geom_bar(position = "fill") +            
     labs(
-      title = "Churn selon le statut Senior",
+      title = "Impact du profil Senior sur le Churn",
       y = "Proportion",
-      x = "Est Senior ?",
-      fill = "Désabonnement"
+      x = "Profil senior ?",
+      fill = "Churn"
     ) +
     theme_minimal() 
 )
