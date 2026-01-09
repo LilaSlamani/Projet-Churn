@@ -16,8 +16,9 @@ La compréhension et la prédiction du churn sont donc essentielles pour optimis
 
 
 ## Auteurs et Organisation
+*   Membres du groupe : Chaimae RAMDANI & Lila SLAMANI
 *   Suivi du projet : https://trello.com/invite/b/695d3107d1362cde02eafabc/ATTI8ef4ff99a6d8611cbbfd0402d5430c3a18737293/projet-churn
-*   Membres : Chaimae RAMDANI & Lila SLAMANI
+*   Lien de l'application :  https://6i1l7w-lila-slamani.shinyapps.io/churn_app/
   ```text
 Projet-Churn/
 

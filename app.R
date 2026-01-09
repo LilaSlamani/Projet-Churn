@@ -81,7 +81,7 @@ ui <- fluidPage(
           div(h2("Pilotage de la Rétention Client")),
           tags$ul(class = "nav nav-tabs", id = "tab_nav",
                   tags$li(class = "active", tags$a(href = "#tab1", `data-toggle` = "tab", icon("database"), " Données")),
-                  tags$li(tags$a(href = "#tab2", `data-toggle` = "tab", icon("robot"), " Simulation IA")),
+                  tags$li(tags$a(href = "#tab2", `data-toggle` = "tab", icon("robot"), " Prédiction Churn")),
                   tags$li(tags$a(href = "#tab3", `data-toggle` = "tab", icon("chart-bar"), " Visualisations"))
           )
       ),
