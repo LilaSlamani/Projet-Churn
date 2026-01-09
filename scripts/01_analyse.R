@@ -6,7 +6,7 @@ library(GGally)        #graphiques exploratoires
 
 
 
-# --- PARTIE 1 : CHARGEMENT & NETTOYAGE ---
+# CHARGEMENT & NETTOYAGE ---
 data <- read.csv("data/churn_internet.csv", stringsAsFactors = TRUE)
 
 # Aperçu rapide des données
@@ -19,8 +19,7 @@ summary(data)   # statistiques descriptives globales
 
 data_clean <- data %>%
   mutate(
-    # la virgule est le séparateur décimal donc on remplace  un point 
-    # et on convertit en numérique.
+    # la virgule est le séparateur décimal donc on remplace par un point et on convertit en numérique.
     charges.mensuelles = as.numeric(
       str_replace(charges.mensuelles, ",", ".")
     ),
@@ -36,8 +35,7 @@ data_clean <- data %>%
       labels = c("Non", "Oui")
     ),
     
-    # Transformation explicite de la variable cible
-    # target = Oui (churn) / Non (pas de churn)
+    # Transformation explicite de la variable cible target = Oui (churn) / Non (pas de churn)
     target = factor(target)
   )
 
@@ -51,7 +49,31 @@ data_clean <- data_clean %>% drop_na()
 # Vérification : Doit afficher 0 partout
 print(colSums(is.na(data_clean)))
 
-# --- PARTIE 2 : ANALYSE DESCRIPTIVE ---
+# SUPPRESSION DES VALEURS ABERRANTES (OUTLIERS)
+# Objectif :
+# Supprimer les observations présentant une ancienneté anormalement faible ou élevée
+# Méthode : règle de l'IQR (1.5 * IQR)
+
+# Calcul des quartiles
+Q1 <- quantile(data_clean$Anciennete, 0.25)
+Q3 <- quantile(data_clean$Anciennete, 0.75)
+IQR <- Q3 - Q1
+
+# Définition des bornes
+borne_inf <- Q1 - 1.5 * IQR
+borne_sup <- Q3 + 1.5 * IQR
+
+# Suppression des lignes contenant des valeurs aberrantes
+data_clean <- data_clean %>%
+  filter(
+    Anciennete >= borne_inf,
+    Anciennete <= borne_sup
+  )
+
+# Vérification après suppression
+summary(data_clean$Anciennete)
+
+# ANALYSE DESCRIPTIVE ---
 
 mon_tableau <- data_clean %>%
   select(Genre, Senior, Anciennete, charges.mensuelles, target) %>%
@@ -62,7 +84,6 @@ mon_tableau <- data_clean %>%
   add_p()
 
 print(mon_tableau) # S'affiche dans le Viewer
-
 
 #ANALYSE DESCRIPTIVE DE LA VARIABLE CIBLE
 # Nombre de clients churn / non churn
