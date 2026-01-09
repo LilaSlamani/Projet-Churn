@@ -18,8 +18,9 @@ La compréhension et la prédiction du churn sont donc essentielles pour optimis
 ## Auteurs et Organisation
 *   Suivi du projet : https://trello.com/invite/b/695d3107d1362cde02eafabc/ATTI8ef4ff99a6d8611cbbfd0402d5430c3a18737293/projet-churn
 *   Membres : Chaimae RAMDANI & Lila SLAMANI
-  
+  ```text
 Projet-Churn/
+
 ├── data/
 │ ├── churn_internet.csv # Données brutes
 │ └── data_clean.rds # Données nettoyées prêtes à l’analyse
