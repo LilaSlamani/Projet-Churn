@@ -72,6 +72,7 @@ install.packages(c(
   "GGally", "pROC", "randomForest", "DT", "rsconnect",
   "shinydashboard", "stringr", "knitr"
 ))
+```
 
 ### 4. Exécution du projet
 
