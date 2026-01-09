@@ -30,8 +30,7 @@ Projet-Churn/
 ├── app.R # WebApp Shiny
 ├── .gitignore
 └── README.md
-
-
+```
 
 ---
 
