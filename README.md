@@ -34,7 +34,19 @@ Projet-Churn/
 ```
 
 ---
+## 🚀 Installation et utilisation
 
+### 1. Prérequis
+Assurez-vous d’avoir installé :
+- [R](https://cran.r-project.org/) (version **4.0 ou supérieure**)
+- [RStudio](https://posit.co/download/rstudio-desktop/)
+
+### 2. Clonage du projet
+```bash
+git clone https://github.com/votre-compte/Projet-Churn.git
+cd Projet-Churn
+
+---
 ##  Technologies utilisées
 
 Le projet est réalisé entièrement en **R** :
@@ -47,6 +59,37 @@ Le projet est réalisé entièrement en **R** :
 | Modélisation | **caret**, **pROC** |
 | Déploiement web | **Shiny** |
 | Versionning & collaboration | **GitHub** |
+
+
+### 3. Installation des dépendances R
+
+Ouvrez le fichier `.Rproj` dans **RStudio**, puis exécutez la commande suivante dans la console afin d’installer tous les packages nécessaires :
+
+```r
+install.packages(c(
+  "tidyverse", "caret", "shiny", "gtsummary", "naniar",
+  "GGally", "pROC", "randomForest", "DT", "rsconnect",
+  "shinydashboard", "stringr", "knitr"
+))
+
+### 4. Exécution du projet
+
+Pour reproduire l’analyse complète, exécutez les scripts **dans l’ordre suivant** :
+
+1. **Nettoyage et EDA**  
+   Exécutez `scripts/01_analyse.R` pour générer le fichier de données nettoyées :  
+   `data/data_clean.rds`
+
+2. **Modélisation**  
+   Exécutez `scripts/02_modelisation.R` pour entraîner le modèle et sauvegarder :  
+   `data/modele_churn.rds`
+
+3. **Application Shiny**  
+   Ouvrez le fichier `app.R` à la racine du projet, puis :
+   - cliquez sur **Run App** dans RStudio, ou  
+   - exécutez la commande suivante dans la console :
+   ```r
+   shiny::runApp()
 
 ---
 
