@@ -44,7 +44,8 @@ Assurez-vous d’avoir installé :
 ### 2. Clonage du projet
 ```bash
 git clone https://github.com/votre-compte/Projet-Churn.git
-cd Projet-Churn```
+cd Projet-Churn
+```
 
 ---
 ##  Technologies utilisées
